@@ -3,7 +3,8 @@ require('dotenv').config();
 
 
 const express = require('express');
-const casual = require('casual')
+const casual = require('casual');
+const morgan = require('morgan')
 
 
 const app = express();
@@ -17,6 +18,7 @@ function generateData() {
 } 
 
 
+app.use(morgan('dev'))
 app.use(express.json());
 
 app.use(function(req, res, next) {
