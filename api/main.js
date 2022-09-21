@@ -21,9 +21,10 @@ function generateData() {
 
 
 app.use(cors({
-   allowedHeaders: [ 'x-test-header' ],
+   origin: [ 'http://localhost', '*' ],
+   allowedHeaders: [ 'x-test-header', 'if-none-match' ],
+   exposedHeaders: [ 'x-test-header', 'etag' ],
    methods: [ 'GET', 'PUT' ],
-   origin: '*'
 }));
 
 
