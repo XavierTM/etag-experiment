@@ -89,7 +89,7 @@
 
          } catch (err) {
             icon = xMark;
-            message = `<br>&#9;${String(err)}`;
+            message = `<br>${tab}${String(err)}`;
             console.log(err);
          }
 
@@ -104,6 +104,7 @@
 
       const tick = '<span class="green-text">&#10003;</span>';
       const xMark = '<span class="red-text">&#x2717;</span>';
+      const tab = '&nbsp;&nbsp;&nbsp;';
 
       (async () => {
          await test(url, "No reverse proxy");
