@@ -8,63 +8,63 @@ const { default: axios } = require('axios');
 
 chai.use(chaiHttp);
 
-// suite("chai etag support", () => {
+suite("chai etag support", () => {
 
-//    test("repeating a request to /data should give 304", async () => {
+   test("repeating a request to /data should give 304", async () => {
 
-//       let res = await chai
-//          .request(server)
-//          .get('/data');
+      let res = await chai
+         .request(server)
+         .get('/data');
 
-//       const etag = res.get('etag');
+      const etag = res.get('etag');
 
 
-//       res = await chai
-//          .request(server)
-//          .get('/data')
-//          .set('if-none-match', etag);
+      res = await chai
+         .request(server)
+         .get('/data')
+         .set('if-none-match', etag);
 
-//       assert.equal(res.status, 304);
+      assert.equal(res.status, 304);
 
-//    });
+   });
 
-// });
+});
 
-// function behaviourTest(server, suiteName) {
+function behaviourTest(server, suiteName) {
 
-//    suite(suiteName, function() {
+   suite(suiteName, function() {
 
-//       test('Two subsequent GET /data requests should give the same etag', async () => {
+      test('Two subsequent GET /data requests should give the same etag', async () => {
          
-//          const firstRequest = await chai
-//             .request(server)
-//             .get('/data');
+         const firstRequest = await chai
+            .request(server)
+            .get('/data');
 
-//          const secondRequest = await chai
-//             .request(server)
-//             .get('/data');
+         const secondRequest = await chai
+            .request(server)
+            .get('/data');
 
          
-//          assert.notEqual(secondRequest.get('x-test-header'), firstRequest.get('x-test-header'), "x-test-headers should be different");
-//          assert.equal(secondRequest.get('etag'), firstRequest.get('etag'), "Etags should be the same");
+         assert.notEqual(secondRequest.get('x-test-header'), firstRequest.get('x-test-header'), "x-test-headers should be different");
+         assert.equal(secondRequest.get('etag'), firstRequest.get('etag'), "Etags should be the same");
 
-//          const etag = secondRequest.get('etag');
+         const etag = secondRequest.get('etag');
 
-//          const thirdRequest = await chai
-//             .request(server)
-//             .get('/data')
-//             .set('if-none-match', etag);
+         const thirdRequest = await chai
+            .request(server)
+            .get('/data')
+            .set('if-none-match', etag);
 
-//          assert.equal(thirdRequest.status, 304);
-//          assert.notEqual(thirdRequest.get('x-test-header'), secondRequest.get('x-test-header'), "x-test-headers should be different");
+         assert.equal(thirdRequest.status, 304);
+         assert.notEqual(thirdRequest.get('x-test-header'), secondRequest.get('x-test-header'), "x-test-headers should be different");
 
-//          console.log('text:', thirdRequest.text);
-//          console.log('text(first):', firstRequest.text);
+         console.log('text:', thirdRequest.text);
+         console.log('text(first):', firstRequest.text);
 
-//       });
-//    });
+      });
+   });
 
-// }
+}
 
 
 function behaviourTestWithAxios(baseURL, suiteName) {
@@ -109,10 +109,10 @@ function behaviourTestWithAxios(baseURL, suiteName) {
 
 
 
-// behaviourTest(process.env.URL, 'Without reverse proxy');
-// behaviourTest(process.env.REVERSE_PROXY_URL, 'With reverse proxy');
+behaviourTest(process.env.URL, 'Without reverse proxy');
+behaviourTest(process.env.REVERSE_PROXY_URL, 'With reverse proxy');
 
-// behaviourTestWithAxios(process.env.URL, 'Without reverse proxy');
-// behaviourTestWithAxios(process.env.REVERSE_PROXY_URL, 'With reverse proxy');
+behaviourTestWithAxios(process.env.URL, 'Without reverse proxy');
+behaviourTestWithAxios(process.env.REVERSE_PROXY_URL, 'With reverse proxy');
 
-behaviourTestWithAxios(`http://localhost:${process.env.PORT}`, 'Axios against local');
+// behaviourTestWithAxios(`http://localhost:${process.env.PORT}`, 'Axios against local');
