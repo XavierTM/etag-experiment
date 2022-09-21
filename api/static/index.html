@@ -1,0 +1,115 @@
+
+<html>
+
+<head>
+   
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <title>Etag Test</title>
+
+   <style>
+
+      .full-screen {
+         position: fixed;
+         top: 0;
+         bottom: 0;
+         left: 0;
+         right: 0;
+      }
+
+      .vh-align {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+
+      #div-results {
+         width: 360px;
+         min-height: 400px;
+         font-family: 'Courier New', Courier, monospace;
+         border: 1px solid #ccc;
+         border-radius: 2px;
+         overflow-y: auto;
+         background-color: black;
+         color: white;
+         padding: 20px;
+      }
+
+      .red-text {
+         color: red;
+      }
+
+      .green-text {
+         color: green;
+      }
+
+   </style>
+</head>
+
+<body>
+
+   <div class="full-screen vh-align">
+      <div id="div-results">
+         TEST RESULTS
+      </div>
+   </div>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.3.6/chai.min.js" integrity="sha512-sP7hp2cpEWsmOHQPc6taNuXFmvG59BhI3YS3tOvZ+nDEqOyyORLiY3nBjLkWgCNI8SFZ5koUyiBO42Q3wzZDrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   
+   <script>
+
+      function getHeadersFromFetchAPIResponse(res) {
+         const keys = Array.from(res.headers.keys());
+
+         const headers = {};
+
+         for (let i in keys) {
+            const key = keys[i]
+            headers[key] = res.headers.get(key);
+         }
+
+         return headers;
+
+      }
+
+      async function test(url, suiteName) {
+
+         let icon, message = '';
+
+         try {
+
+            const firstRes = await fetch(`${url}/data`);
+            const secondRes = await fetch(`${url}/data`);
+
+            assert.equal(firstRes.headers.get('etag'), secondRes.headers.get('etag'),);
+            assert.notEqual(firstRes.headers.get('x-test-header'), secondRes.headers.get('x-test-header'));
+
+            icon = tick;
+
+         } catch (err) {
+            icon = xMark;
+            message = `<br>&#9;${String(err)}`
+         }
+
+         document.getElementById('div-results').innerHTML += `<br>${icon} ${suiteName}${message}`;
+
+      }
+
+      const { assert } = chai;
+
+      const proxiedUrl = window.prompt("Reverse proxied url");
+      const url = window.prompt("URL without proxy");
+
+      const tick = '<span class="green-text">&#10003;</span>';
+      const xMark = '<span class="red-text">&#x2717;</span>';
+
+      (async () => {
+         await test(url, "No reverse proxy");
+         await test(proxiedUrl, "Reverse proxy");
+      })();
+
+
+   </script>
+</body>
+</html>

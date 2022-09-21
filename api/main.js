@@ -4,7 +4,8 @@ require('dotenv').config();
 
 const express = require('express');
 const casual = require('casual');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const cors = require('cors');
 
 
 const app = express();
@@ -18,11 +19,26 @@ function generateData() {
 } 
 
 
+
+app.use(cors({
+   allowedHeaders: [ 'x-test-header' ],
+   methods: [ 'GET', 'PUT' ],
+   origin: '*'
+}));
+
+
 app.use(morgan('dev'))
+app.use(express.static('static'));
 app.use(express.json());
 
 app.use(function(req, res, next) {
+
+   if (process.env.NODE_ENV !== 'production') {
+      console.log(req.headers['if-none-match']);
+   }
+
    res.set('x-test-header', casual.uuid);
+
    next();
 });
 
@@ -39,9 +55,12 @@ app.put('/data', (req, res) => {
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, function() {
+const server = app.listen(PORT, function() {
    console.log('Server started at @', PORT);
-})
+});
+
+
+module.exports = server;
 
 
 
