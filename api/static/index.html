@@ -89,7 +89,8 @@
 
          } catch (err) {
             icon = xMark;
-            message = `<br>&#9;${String(err)}`
+            message = `<br>&#9;${String(err)}`;
+            console.log(err);
          }
 
          document.getElementById('div-results').innerHTML += `<br>${icon} ${suiteName}${message}`;
