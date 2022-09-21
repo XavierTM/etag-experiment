@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "mocha --timeout 5000 --exit --ui tdd",
+    "test": "mocha --timeout 10000 --exit --ui tdd",
     "start": "node .",
     "dev": "nodemon ."
   },
